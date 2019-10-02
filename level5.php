@@ -1,5 +1,9 @@
 <?php
 
+// エラーを強制表示する
+error_reporting(E_ALL & ~ E_DEPRECATED & ~ E_USER_DEPRECATED & ~ E_NOTICE);
+ini_set('display_errors', "On");
+
 // XSS対策のため， $var を h($var) にする
 function h($str)
 {
@@ -24,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && sha1(session_id()) === $token) {
     ftruncate($fp, 0);
     rewind($fp);
     // ファイルにJSON形式として配列全体を上書きする (オプションは読みやすくするためのもの)
-    fwrite(json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    fwrite($fp, json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
 fclose($fp);
 
